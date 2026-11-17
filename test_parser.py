@@ -1,23 +1,9 @@
 import pytest
 
-
-def parse_interfaces(output: str):
-    result = []
-    if output == "" or output is None:
-        return result
-    for line in output.strip().splitlines()[1:]:
-        name, ip, status, protocol = line.split()
-        result.append({
-            "name": name,
-            "ip": ip if ip != "unassigned" else None,
-            "status": status,
-            "protocol": protocol
-        })
-
-    return result
+from parser import parse_interfaces
 
 
-@pytest.mark.parametrize("output, result", [
+@pytest.mark.parametrize("output, expected", [
     (
             """
             Interface    IP-Address     Status   Protocol
@@ -29,23 +15,31 @@ def parse_interfaces(output: str):
                 "ip": "10.0.0.1",
                 "status": "up",
                 "protocol": "up"
-            },{
+            }, {
                 "name": "Gi0/2",
                 "ip": None,
                 "status": "down",
                 "protocol": "down"
             }
             ]
-    ),(
+    ), (
             """
             Interface    IP-Address     Status   Protocol
             """,
             []
+    ), (
+            """
+            Interface    IP-Address     Status   Protocol
+            
+            Gi0/2        unassigned     down     down
+            """,
+            [{
+                "name": "Gi0/2",
+                "ip": None,
+                "status": "down",
+                "protocol": "down"
+            }]
     )
 ])
-def test_output_validation(output, result):
-    assert parse_interfaces(output) == result
-
-
-if __name__ == '__main__':
-    test_output_validation()
+def test_output_validation(output, expected):
+    assert parse_interfaces(output) == expected

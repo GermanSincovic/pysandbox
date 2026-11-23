@@ -22,6 +22,7 @@ Suggested order:
 | File | Topic | Tests |
 |---|---|---|
 | `tasks/basics.py` | Python basics: strings, dicts, sets, lists, sorting, functions, exceptions, classes, generators, decorators (tasks 1-14) | `tests/test_basics.py` |
+| `tasks/decorators.py` | decorators: wrapper, `*args/**kwargs`, `functools.wraps`, attributes on wrapper, decorator with parameter (tasks 1-6) | `tests/test_decorators.py` |
 | `tasks/ports.py` | validate and parse ports, exceptions | `tests/test_ports.py` |
 | `tasks/scanner.py` | class with a dict, counting | `tests/test_scanner.py` |
 | `tasks/logs.py` | WordCounter, top IPs from logs, chunks generator | `tests/test_logs.py` |

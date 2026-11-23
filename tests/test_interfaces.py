@@ -1,6 +1,6 @@
 import pytest
 
-from parser import parse_interfaces
+from tasks.interfaces import parse_interfaces
 
 
 @pytest.mark.parametrize("output, expected", [

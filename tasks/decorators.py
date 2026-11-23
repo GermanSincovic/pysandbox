@@ -34,8 +34,9 @@ def trace(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         print("->", func.__name__)
+        res = func(*args, **kwargs)
         print("<-", func.__name__)
-        return func(*args, **kwargs)
+        return res
 
     return wrapper
 

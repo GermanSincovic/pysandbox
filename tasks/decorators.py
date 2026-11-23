@@ -69,7 +69,7 @@ def memoize(func):
     @functools.wraps(func)
     def wrapper(*args):
         res = wrapper.cache.get(args, None)
-        if res:
+        if res is not None:
             return res
         else:
             res = func(*args)
@@ -87,7 +87,7 @@ def retry(times):
             for n in range(1, times + 1):
                 try:
                     return func(*args, **kwargs)
-                except ConnectionError:
+                except Exception:
                     if n == times:
                         raise
 

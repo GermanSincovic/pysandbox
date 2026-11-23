@@ -108,6 +108,7 @@ def test_05_memoize_calls_once():
     assert resolve("a.local") == "ip-of-a.local"
     assert resolve("a.local") == "ip-of-a.local"
     assert calls == ["a.local"]
+    assert resolve("") == "ip-of-"
 
 
 def test_05_memoize_different_args():

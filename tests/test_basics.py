@@ -14,6 +14,7 @@ from tasks.basics import (
     pytest.param("", "", id="empty"),
     pytest.param("show interfaces Gi0/1", "Gi0/1 interfaces show", id="special"),
     pytest.param("ip-route add", "add ip-route", id="minus"),
+    pytest.param("host_name is up", "up is host_name", id="underscore"),
 ])
 def test_01_reverse_words(text, expected):
     assert reverse_words(text) == expected

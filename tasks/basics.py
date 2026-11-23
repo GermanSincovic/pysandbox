@@ -6,8 +6,7 @@ import re
 
 
 def reverse_words(text):
-    pattern = re.compile("[\\s_]+", flags=re.MULTILINE)
-    return " ".join(reversed(re.split(pattern, text.strip())))
+    return " ".join(reversed([x.strip() for x in str(text).split()]))
 
 
 def is_palindrome(text):
@@ -127,5 +126,6 @@ def count_calls(func):
     def wrapper(*args, **kwargs):
         wrapper.calls += 1
         return func(*args, **kwargs)
+
     wrapper.calls = 0
     return wrapper

@@ -12,6 +12,8 @@ from tasks.basics import (
     pytest.param("  a   b ", "b a", id="extra_spaces"),
     pytest.param("single", "single", id="one_word"),
     pytest.param("", "", id="empty"),
+    pytest.param("show interfaces Gi0/1", "Gi0/1 interfaces show", id="special"),
+    pytest.param("ip-route add", "add ip-route", id="minus"),
 ])
 def test_01_reverse_words(text, expected):
     assert reverse_words(text) == expected
@@ -91,6 +93,9 @@ def test_09_add_item_new_list_each_call():
 def test_09_add_item_with_given_list():
     items = ["a"]
     assert add_item("b", items) == ["a", "b"]
+    items = []
+    add_item("x", items)
+    assert items == ["x"]
 
 
 @pytest.mark.parametrize("args, kwargs, expected", [
@@ -115,6 +120,8 @@ def test_11_safe_divide(a, b, expected):
 
 def test_12_vlan_repr():
     assert repr(Vlan(10, "users")) == "Vlan(10, 'users')"
+    assert repr(Vlan(10, "O'Brien")) == "Vlan(10, 'O'Brien')"
+    # Якраз без !r працює нормально
 
 
 def test_12_vlan_equal_by_vid():

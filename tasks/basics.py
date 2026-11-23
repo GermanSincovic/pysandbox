@@ -6,7 +6,7 @@ import re
 
 
 def reverse_words(text):
-    pattern = re.compile("\\W+", flags=re.MULTILINE)
+    pattern = re.compile("[\\s_]+", flags=re.MULTILINE)
     return " ".join(reversed(re.split(pattern, text.strip())))
 
 
@@ -60,7 +60,7 @@ def sort_devices(devices):
 # ---------- Functions ----------
 
 def add_item(item, items=None):
-    if items:
+    if items is not None:
         items.append(item)
         return items
     else:
@@ -124,9 +124,8 @@ def even_squares(limit):
 
 def count_calls(func):
     @functools.wraps(func)
-    def wrapper(host):
+    def wrapper(*args, **kwargs):
         wrapper.calls += 1
-        return func(host)
-
+        return func(*args, **kwargs)
     wrapper.calls = 0
     return wrapper

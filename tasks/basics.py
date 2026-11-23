@@ -6,7 +6,8 @@ import re
 
 
 def reverse_words(text):
-    return " ".join(text.split(" ").reverse())
+    pattern = re.compile("\\W+", flags=re.MULTILINE)
+    return " ".join(reversed(re.split(pattern, text.strip())))
 
 
 def is_palindrome(text):
@@ -26,13 +27,13 @@ def char_frequency(text):
 
 
 def unique_sorted(items):
-    return list(set(items)).sort()
+    return sorted(list(set(items)))
 
 
 def merge_counts(a, b):
     res = dict.copy(a)
     for k, v in b.items():
-        res[k] = res.get(k, 0) + 1
+        res[k] = res.get(k, 0) + v
     return res
 
 
@@ -50,7 +51,7 @@ def flatten(nested):
 
 
 def sort_devices(devices):
-    return devices.sorted(devices, key=lambda d: (d["vlan"], d["name"]))
+    return sorted(devices, key=lambda d: (d["vlan"], d["name"]))
 
 
 # Too obvious hint
@@ -59,17 +60,22 @@ def sort_devices(devices):
 # ---------- Functions ----------
 
 def add_item(item, items=None):
-    if items and items is list:
-        return list(items).append(item)
+    if items:
+        items.append(item)
+        return items
     else:
         return [item]
 
 
 def build_url(host, *path, **params):
-    url = "/".join([host, (p for p in path)])
-    url += "?"
-    url += "&".join(["=".join([k, v]) for k, v in params])
-    return url
+    proto = "https://"
+    if proto not in host:
+        host = proto + host
+    if len(path) > 0:
+        host += "/" + "/".join(p for p in path)
+    if len(params.keys()) > 0:
+        host += "?" + "&".join(["=".join([str(k), str(v)]) for k, v in params.items()])
+    return host
 
 
 # ---------- Exceptions ----------
@@ -77,7 +83,7 @@ def build_url(host, *path, **params):
 def safe_divide(a, b):
     try:
         return a / b
-    except ValueError:
+    except ZeroDivisionError:
         return None
 
 
@@ -86,14 +92,14 @@ def safe_divide(a, b):
 class Vlan:
 
     def __init__(self, vid, name):
-        if id in range(1, 4095):
-            self.vid = id
+        if vid in range(1, 4095):
+            self.vid = vid
         else:
             raise ValueError
         self.name = name
 
     def __repr__(self):
-        return f"{self.__name__}({self.vid}, {self.name})"
+        return f"Vlan({self.vid}, '{self.name}')"
 
     def __eq__(self, other) -> bool:
         if type(other) is type(self):
@@ -102,23 +108,25 @@ class Vlan:
             return False
 
     def __hash__(self) -> int:
-        return hash((self.vid, self.name))
+        return hash(self.vid)
 
 
 # ---------- Generators ----------
 
 def even_squares(limit):
     for x in range(limit):
-        if x ** limit % 2 == 0:
-            yield x ** limit
+        square = x ** 2
+        if square % 2 == 0:
+            yield square
 
 
 # ---------- Decorators ----------
 
 def count_calls(func):
-    i = 0
-
     @functools.wraps(func)
-    def wrapper():
-        func()
-        print("Function called", i + 1, "times")
+    def wrapper(host):
+        wrapper.calls += 1
+        return func(host)
+
+    wrapper.calls = 0
+    return wrapper

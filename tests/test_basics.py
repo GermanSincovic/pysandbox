@@ -121,8 +121,7 @@ def test_11_safe_divide(a, b, expected):
 
 def test_12_vlan_repr():
     assert repr(Vlan(10, "users")) == "Vlan(10, 'users')"
-    assert repr(Vlan(10, "O'Brien")) == "Vlan(10, 'O'Brien')"
-    # Якраз без !r працює нормально
+    assert repr(Vlan(10, "O'Brien")) == "Vlan(10, \"O'Brien\")"
 
 
 def test_12_vlan_equal_by_vid():

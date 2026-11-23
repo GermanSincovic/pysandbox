@@ -98,7 +98,7 @@ class Vlan:
         self.name = name
 
     def __repr__(self):
-        return f"Vlan({self.vid}, '{self.name}')"
+        return f"Vlan({self.vid}, {self.name!r})"
 
     def __eq__(self, other) -> bool:
         if type(other) is type(self):

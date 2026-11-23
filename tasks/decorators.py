@@ -33,8 +33,8 @@ def shout(func):
 def trace(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        print("-> add")
-        print("<- add")
+        print("->", func.__name__)
+        print("<-", func.__name__)
         return func(*args, **kwargs)
 
     return wrapper
@@ -68,9 +68,8 @@ def validate_ip(func):
 def memoize(func):
     @functools.wraps(func)
     def wrapper(*args):
-        res = wrapper.cache.get(args, None)
-        if res is not None:
-            return res
+        if args in wrapper.cache.keys():
+            return wrapper.cache.get(args)
         else:
             res = func(*args)
             wrapper.cache[args] = res
